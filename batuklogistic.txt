@@ -1,0 +1,21 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+dataset = pd.read_csv("D:\Study\Sem9\ML\Practice\Internal_Practice\winequality-white .csv",";")
+dataset.head()
+
+
+x = dataset[["citric acid","alcohol","density"]].values
+y = dataset["quality"].values
+
+from sklearn.linear_model import LogisticRegression
+logy = LogisticRegression()
+logy.fit(x,y)
+
+y_pred = logy.predict(x)
+
+from sklearn.metrics import confusion_matrix,accuracy_score
+print(confusion_matrix(y,y_pred))
+print(accuracy_score(y,y_pred)*100)
+print(logy.score(x,y)*100)
