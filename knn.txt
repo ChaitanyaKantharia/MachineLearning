@@ -1,0 +1,40 @@
+
+import pandas as pd 
+import numpy as np
+data=pd.read_csv('F:/play_data.csv')
+data
+
+from sklearn.preprocessing import LabelEncoder
+le = LabelEncoder()
+data['outlook'] = le.fit_transform(data['outlook'])
+data['temp'] = le.fit_transform(data['temp'].astype(str))
+data['humidity'] = le.fit_transform(data['humidity'].astype(str))
+data['wind'] = le.fit_transform(data['wind'].astype(str))
+data['play'] = le.fit_transform(data['play'].astype(str))
+data
+
+
+x = data.iloc[:,1:5].values
+y=data.iloc[:,5].values
+
+from sklearn.model_selection import train_test_split
+xtrain,xtest,ytrain,ytest=train_test_split(x,y,test_size=0.2,random_state=0)
+
+from sklearn.preprocessing import StandardScaler
+sc=StandardScaler()
+xtrain=sc.fit_transform(xtrain)
+xtest=sc.fit_transform(xtest)
+
+from sklearn.neighbors import KNeighborsClassifier
+model=KNeighborsClassifier(n_neighbors=5)
+model.fit(xtrain,ytrain)
+
+
+
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
+ypred = model.predict(xtest)
+print(classification_report(ytest,ypred))
+print(confusion_matrix(ytest,ypred))
+
+print("Acurracy {:.2f}".format(model.score(xtest,ytest)*100)+'%')
